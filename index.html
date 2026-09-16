@@ -4,437 +4,265 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#005b4f">
-<title>Pause Before the Next Patient — Prototype</title>
+<title>Pause Before the Next Patient — Learning Prototype</title>
 <style>
 :root{
-  --green:#005b4f;
-  --green-dark:#003f37;
-  --green-mid:#087c68;
-  --yellow:#ffdf00;
-  --yellow-dark:#e8c900;
-  --white:#fff;
-  --ink:#17332f;
-  --muted:#5c6f6b;
-  --line:#d7e1de;
-  --pale:#f4f8f7;
-  --light-green:#e5f5e9;
-  --traffic-green:#149447;
-  --light-amber:#fff3d6;
-  --traffic-amber:#f5a400;
-  --light-red:#fde5e5;
-  --traffic-red:#d92d20;
+ --green:#005b4f;--green2:#087c68;--dark:#003f37;--yellow:#ffdf00;
+ --ink:#17332f;--muted:#5d706c;--line:#d7e1de;--pale:#f3f8f6;
+ --g:#159447;--gl:#e4f5e9;--a:#ef9d00;--al:#fff1d3;--r:#d92d20;--rl:#fde5e5;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:#dfe7e5;
-  color:var(--ink);
-  font-family:Arial,Helvetica,sans-serif;
-}
-.app{
-  max-width:760px;
-  min-height:100vh;
-  margin:auto;
-  background:#fff;
-  box-shadow:0 0 30px rgba(0,0,0,.12);
-}
-header{
-  position:sticky;top:0;z-index:10;
-  color:#fff;
-  background:var(--green);
-  border-bottom:5px solid var(--yellow);
-  padding:12px 18px 10px;
-}
-.brand{
-  display:flex;align-items:center;gap:11px;
-}
-.brand-mark{
-  width:42px;height:42px;border:2px solid var(--yellow);
-  border-radius:8px;display:grid;place-items:center;
-  font-weight:900;font-size:12px;line-height:1.05;text-align:center;
-  color:var(--yellow);
-}
-.brand-title{font-size:17px;font-weight:800;letter-spacing:.2px}
-.brand-sub{font-size:10px;letter-spacing:2px;margin-top:3px;opacity:.9}
-.progress{height:5px;background:rgba(255,255,255,.25);margin-top:10px;border-radius:5px;overflow:hidden}
-.bar{height:100%;background:var(--yellow);width:0;transition:.25s}
-main{padding:0 18px 100px}
-.screen{display:none;padding:24px 0 8px}
-.screen.active{display:block}
-h1{font-size:36px;line-height:1.02;margin:0 0 13px;letter-spacing:-1px}
-h2{font-size:27px;line-height:1.1;margin:0 0 14px;color:var(--green-dark)}
-h3{font-size:19px;margin:18px 0 7px;color:var(--green-dark)}
-p,li{font-size:17px;line-height:1.5}
-.small{font-size:13px;line-height:1.45;color:var(--muted)}
-.lead{font-size:19px;line-height:1.45}
-.hero{
-  margin:0 -18px;
-  padding:28px 22px 24px;
-  color:#fff;
-  background:
-    linear-gradient(135deg,rgba(0,91,79,.98),rgba(0,63,55,.98));
-  position:relative;
-  overflow:hidden;
-}
-.hero:before,.hero:after{
-  content:"";position:absolute;width:150px;height:18px;
-  background:var(--yellow);transform:rotate(-58deg);
-  right:-45px;top:20px;box-shadow:0 30px 0 var(--yellow);
-}
-.hero:after{left:-55px;right:auto;top:auto;bottom:-15px;transform:rotate(-58deg);box-shadow:0 -30px 0 var(--yellow)}
-.hero h1{color:#fff;font-size:38px;max-width:650px}
-.hero h1 span{color:var(--yellow);display:block}
-.hero .lead{color:#fff;max-width:620px}
-.hero-tag{
-  display:inline-block;border:1px solid rgba(255,255,255,.55);
-  border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;
-  letter-spacing:1px;margin-bottom:15px;background:rgba(0,0,0,.12)
-}
-.card{
-  border:1px solid var(--line);border-radius:16px;padding:18px;
-  margin:15px 0;background:#fff;box-shadow:0 3px 12px rgba(0,60,50,.06)
-}
-.soft{background:var(--pale)}
-.note{
-  border-left:5px solid var(--yellow-dark);
-  background:#fffbea;padding:13px 15px;margin:17px 0;border-radius:0 10px 10px 0
-}
-.badge{
-  display:inline-block;border-radius:999px;padding:6px 10px;font-size:12px;
-  font-weight:800;letter-spacing:.8px;background:var(--yellow);color:var(--green-dark)
-}
-button{
-  display:block;width:100%;padding:15px 16px;margin:10px 0;
-  border:2px solid var(--green);border-radius:12px;background:#fff;
-  color:var(--green-dark);font-size:17px;font-weight:800;cursor:pointer;
-  transition:.15s;min-height:52px
-}
-button:hover{transform:translateY(-1px)}
-button:disabled{opacity:.45;transform:none;cursor:default}
-.primary{background:var(--green);color:#fff;border-color:var(--green)}
-.primary:hover{background:var(--green-dark)}
-.choice.selected{outline:4px solid rgba(0,91,79,.22);background:#edf8f5}
-.traffic-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0
-}
-.traffic{
-  border-radius:16px;padding:13px 10px;text-align:center;
-  border:2px solid transparent;min-height:185px
-}
-.traffic .lamp{
-  width:66px;height:66px;border-radius:50%;margin:0 auto 10px;
-  display:grid;place-items:center;color:#fff;font-weight:900;font-size:12px;
-  box-shadow:0 5px 12px rgba(0,0,0,.15)
-}
-.traffic h3{margin:4px 0;font-size:18px}
-.traffic p{font-size:14px;line-height:1.35;margin:5px 0}
-.traffic.green-card{background:var(--light-green);border-color:#b8dfc2}
-.traffic.green-card .lamp{background:var(--traffic-green)}
-.traffic.amber-card{background:var(--light-amber);border-color:#f0d69a}
-.traffic.amber-card .lamp{background:var(--traffic-amber)}
-.traffic.red-card{background:var(--light-red);border-color:#efb5b1}
-.traffic.red-card .lamp{background:var(--traffic-red)}
-.feature-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:18px 0 22px;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line)
-}
-.feature{padding:16px 9px;text-align:center}
-.feature+ .feature{border-left:1px solid var(--line)}
-.feature-icon{font-size:28px;color:var(--green);margin-bottom:7px}
-.feature strong{display:block;font-size:14px;line-height:1.25}
-.epr{
-  border:2px solid var(--green);border-radius:16px;overflow:hidden;
-  background:#f6faf9;box-shadow:0 5px 18px rgba(0,60,50,.08)
-}
-.epr-head{background:var(--green);color:#fff;padding:14px 16px;font-weight:800}
-.epr-body{padding:18px}
-.epr-body button{background:#fff}
-.checks label{
-  display:block;border:1px solid var(--line);border-radius:11px;
-  padding:13px;margin:8px 0;font-size:16px;background:#fff
-}
-.checks input{margin-right:9px;accent-color:var(--green)}
-textarea{
-  width:100%;min-height:88px;border:1px solid #aebfba;border-radius:10px;
-  padding:11px;font-size:16px;font-family:inherit;resize:vertical
-}
-.qr{text-align:center;padding:14px;background:var(--pale);border-radius:14px}
-.qr img{width:210px;max-width:70%;border:10px solid #fff;border-radius:8px}
-.result{
-  border-radius:14px;padding:17px;border:2px solid var(--green);
-  background:#effaf6
-}
-.footer-stripe{
-  margin:25px -18px -8px;padding:20px 18px 25px;background:var(--green);
-  color:#fff;text-align:center;border-top:5px solid var(--yellow)
-}
-.footer-stripe strong{color:var(--yellow);letter-spacing:1px}
-.nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(760px,100%);display:flex;gap:9px;padding:10px 16px;
-  background:rgba(255,255,255,.97);border-top:1px solid var(--line);
-  box-shadow:0 -5px 20px rgba(0,0,0,.08);z-index:20
-}
-.nav button{margin:0}
-.back{width:30%!important}
-.next{width:70%!important}
-@media(max-width:520px){
-  main{padding-left:14px;padding-right:14px}
-  .hero{margin-left:-14px;margin-right:-14px;padding-left:17px;padding-right:17px}
-  h1,.hero h1{font-size:31px}
-  h2{font-size:24px}
-  .traffic-grid{gap:7px}
-  .traffic{min-height:170px;padding:11px 6px}
-  .traffic .lamp{width:55px;height:55px}
-  .traffic p{font-size:13px}
-  .feature strong{font-size:13px}
-  .footer-stripe{margin-left:-14px;margin-right:-14px}
-}
+body{margin:0;background:#dfe7e5;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.app{max-width:760px;min-height:100vh;margin:auto;background:#fff;box-shadow:0 0 30px #0002}
+header{position:sticky;top:0;z-index:20;background:var(--green);color:#fff;border-bottom:5px solid var(--yellow);padding:12px 18px}
+.brand{display:flex;gap:11px;align-items:center}.mark{width:43px;height:43px;border:2px solid var(--yellow);border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:900;text-align:center;color:var(--yellow)}
+.bt{font-size:17px;font-weight:800}.bs{font-size:10px;letter-spacing:2px;margin-top:3px}.progress{height:5px;background:#ffffff40;border-radius:5px;margin-top:10px;overflow:hidden}.bar{height:100%;width:0;background:var(--yellow);transition:.25s}
+main{padding:0 18px 105px}.screen{display:none;padding:24px 0}.screen.active{display:block}
+.hero{margin:0 -18px;padding:30px 22px 26px;background:linear-gradient(135deg,var(--green),var(--dark));color:#fff;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-45px;top:-10px;width:160px;height:18px;background:var(--yellow);transform:rotate(-55deg);box-shadow:0 30px 0 var(--yellow)}
+h1{font-size:39px;line-height:1.02;margin:0 0 13px;letter-spacing:-1px}h1 span{display:block;color:var(--yellow)}
+h2{font-size:28px;line-height:1.12;color:var(--dark);margin:0 0 13px}h3{color:var(--dark);margin:18px 0 7px}p,li{font-size:17px;line-height:1.5}.lead{font-size:19px}.small{font-size:13px;color:var(--muted);line-height:1.45}
+.badge{display:inline-block;background:var(--yellow);color:var(--dark);font-size:12px;font-weight:900;letter-spacing:.8px;border-radius:999px;padding:6px 10px;margin-bottom:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #003c3210}.soft{background:var(--pale)}
+.note{border-left:5px solid var(--yellow);background:#fffbea;padding:13px 15px;border-radius:0 10px 10px 0;margin:16px 0}
+button{width:100%;min-height:52px;padding:14px 16px;border:2px solid var(--green);border-radius:12px;background:#fff;color:var(--dark);font-size:16px;font-weight:800;margin:9px 0;cursor:pointer}
+button.primary{background:var(--green);color:#fff}button.primary:hover{background:var(--dark)}
+.choice.selected{background:#edf8f5;outline:4px solid #005b4f2b}
+.traffic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}
+.traffic{border-radius:16px;padding:13px 8px;text-align:center;min-height:165px;border:2px solid transparent}
+.lamp{width:62px;height:62px;border-radius:50%;margin:auto;display:grid;place-items:center;color:#fff;font-weight:900;font-size:11px;box-shadow:0 4px 12px #0002}
+.traffic h3{font-size:17px;margin:7px 0 4px}.traffic p{font-size:13px;line-height:1.3;margin:0}
+.gc{background:var(--gl);border-color:#b9dfc2}.gc .lamp{background:var(--g)}
+.ac{background:var(--al);border-color:#eed397}.ac .lamp{background:var(--a)}
+.rc{background:var(--rl);border-color:#efb6b1}.rc .lamp{background:var(--r)}
+.learn{border-radius:16px;padding:18px;background:var(--pale);border:1px solid var(--line);margin:14px 0}
+.learn-title{font-weight:900;color:var(--green);font-size:14px;letter-spacing:.7px;text-transform:uppercase}
+.steps{display:grid;gap:9px}.step{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+.num{min-width:31px;height:31px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:900}
+.answer{display:none;margin-top:10px;padding:13px;border-radius:10px;background:#eef8f4;border-left:4px solid var(--green)}
+.answer.show{display:block}
+textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;padding:11px;font-size:16px;font-family:inherit}
+.checks label{display:block;background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px;margin:8px 0;font-size:16px}.checks input{accent-color:var(--green);margin-right:9px}
+.scenario{background:#f7faf9;border:2px solid var(--green);border-radius:16px;padding:18px}.feedback{display:none;margin-top:12px;padding:13px;border-radius:11px}.correct{background:var(--gl);border-left:4px solid var(--g)}.consider{background:var(--al);border-left:4px solid var(--a)}
+.result{padding:18px;border-radius:15px;margin-top:14px}.result.green{background:var(--gl);border:2px solid var(--g)}.result.amber{background:var(--al);border:2px solid var(--a)}.result.red{background:var(--rl);border:2px solid var(--r)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);display:flex;gap:9px;padding:10px 16px;background:#fffffff7;border-top:1px solid var(--line);box-shadow:0 -5px 20px #0001;z-index:30}.nav button{margin:0}.back{width:30%}.next{width:70%}
+.footer{margin:25px -18px -8px;padding:22px 18px;background:var(--green);color:#fff;text-align:center;border-top:5px solid var(--yellow)}.footer strong{color:var(--yellow);letter-spacing:1px}
+@media(max-width:520px){main{padding-left:14px;padding-right:14px}.hero{margin-left:-14px;margin-right:-14px;padding-left:17px;padding-right:17px}h1{font-size:31px}.traffic-grid{gap:6px}.traffic{padding:10px 5px;min-height:160px}.lamp{width:54px;height:54px}.traffic p{font-size:12px}.footer{margin-left:-14px;margin-right:-14px}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="brand">
-    <div class="brand-mark">AMB<br>CARE</div>
-    <div>
-      <div class="brand-title">Ambulance Service</div>
-      <div class="brand-sub">PEOPLE • CARE • ALWAYS THERE</div>
-    </div>
-  </div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="brand"><div class="mark">AMB<br>CARE</div><div><div class="bt">Ambulance Service</div><div class="bs">PEOPLE • CARE • ALWAYS THERE</div></div></div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
 </header>
 
 <main>
 
 <section class="screen active">
-  <div class="hero">
-    <span class="hero-tag">WELLBEING • REFLECTION • RESET</span>
-    <h1>PAUSE BEFORE<span>THE NEXT PATIENT</span></h1>
-    <p class="lead">A brief post-call wellbeing and reflection tool for ambulance clinicians.</p>
-    <p>Take a moment to check in, reset, reflect and consider what you need before moving on.</p>
-  </div>
-
-  <div class="traffic-grid">
-    <div class="traffic green-card">
-      <div class="lamp">GREEN</div>
-      <h3>I'm okay</h3>
-      <p>I'm feeling okay and ready to continue.</p>
-    </div>
-    <div class="traffic amber-card">
-      <div class="lamp">AMBER</div>
-      <h3>A bit unsettled</h3>
-      <p>I can continue, but I need to monitor how I feel.</p>
-    </div>
-    <div class="traffic red-card">
-      <div class="lamp">RED</div>
-      <h3>I need support</h3>
-      <p>This job has affected me and I need to speak to someone.</p>
-    </div>
-  </div>
-
-  <div class="feature-grid">
-    <div class="feature"><div class="feature-icon">♡</div><strong>Take a moment</strong><span class="small">for yourself</span></div>
-    <div class="feature"><div class="feature-icon">☑</div><strong>Reflect</strong><span class="small">on how you're feeling</span></div>
-    <div class="feature"><div class="feature-icon">✦</div><strong>Access support</strong><span class="small">if you need it</span></div>
-  </div>
-
-  <div class="note"><strong>A few minutes for you.</strong> A chance to reset after a difficult job and prepare for the next patient.</div>
-  <div class="card soft">
-    <span class="badge">PROTOTYPE ONLY</span>
-    <p>This is not a clinical assessment or performance measure. It does not replace local Trust support, clinical supervision or emergency procedures.</p>
-  </div>
-  <button class="primary" onclick="next()">Start the wellbeing check-in →</button>
-
-  <div class="footer-stripe">
-    <strong>WELL PEOPLE • STRONG TEAMS • BETTER CARE</strong>
-  </div>
+ <div class="hero">
+  <div class="badge">MICRO-LEARNING • WELLBEING • REFLECTION</div>
+  <h1>PAUSE BEFORE<span>THE NEXT PATIENT</span></h1>
+  <p class="lead">A brief learning and reflection tool for ambulance clinicians after a challenging patient encounter.</p>
+  <p>Learn one simple reset skill, practise reflective thinking, and decide what you need before moving on.</p>
+ </div>
+ <div class="traffic-grid">
+  <div class="traffic gc"><div class="lamp">GREEN</div><h3>Ready</h3><p>I feel okay and ready to continue.</p></div>
+  <div class="traffic ac"><div class="lamp">AMBER</div><h3>Monitor</h3><p>I feel unsettled and need to check in with myself.</p></div>
+  <div class="traffic rc"><div class="lamp">RED</div><h3>Support</h3><p>I need to speak to someone or take further action.</p></div>
+ </div>
+ <div class="card soft"><strong>What will I learn?</strong><ul><li>How stress can affect attention and emotions after difficult calls.</li><li>A short STOP–BREATHE–NOTICE–RESET technique.</li><li>How reflective questions can help you identify what you need.</li><li>How to recognise when support may be appropriate.</li></ul></div>
+ <button class="primary" onclick="next()">Start the learning →</button>
+ <div class="footer"><strong>WELL PEOPLE • STRONG TEAMS • BETTER CARE</strong></div>
 </section>
 
 <section class="screen">
-  <h2>EPR submitted</h2>
-  <div class="epr">
-    <div class="epr-head">Patient record submitted ✓</div>
-    <div class="epr-body">
-      <h2>Before your next patient…</h2>
-      <p><strong>Was this job difficult, stressful or emotionally challenging for you?</strong></p>
-      <button onclick="go(2)">I'm okay</button>
-      <button onclick="go(3)">I need a moment</button>
-      <button onclick="go(8)">I need support</button>
-      <p class="small">Optional — not a mandatory assessment or performance measure.</p>
-    </div>
+ <span class="badge">LEARN 1 • RECOGNISE</span>
+ <h2>Why can a difficult call stay with us?</h2>
+ <p>After a challenging encounter, the body and mind may remain in a heightened state even when the immediate situation has ended.</p>
+ <div class="steps">
+  <div class="step"><div class="num">1</div><div><strong>Body stays activated</strong><br><span class="small">Heart rate, muscle tension and alertness can remain elevated for a while.</span></div></div>
+  <div class="step"><div class="num">2</div><div><strong>Attention can stay on the call</strong><br><span class="small">You may replay events or find it harder to switch your attention to the next task.</span></div></div>
+  <div class="step"><div class="num">3</div><div><strong>Emotions can surface later</strong><br><span class="small">Upset, frustration, sadness or numbness may become noticeable after the immediate pressure has passed.</span></div></div>
+ </div>
+ <div class="note"><strong>Learning point:</strong> noticing your response is not a sign of weakness. It is an opportunity to pause and choose what you need next.</div>
+ <button onclick="next()">Learn a reset technique →</button>
+</section>
+
+<section class="screen">
+ <span class="badge">LEARN 2 • MINDFULNESS</span>
+ <h2>A short mindfulness pause</h2>
+ <p>Mindfulness means deliberately bringing your attention to what is happening right now, rather than becoming caught up in thoughts about the previous call or the next job.</p>
+ <p>This short exercise uses your breathing and attention to create a transition between patient encounters.</p>
+ <div class="learn">
+  <div class="learn-title">How it works</div>
+  <p><strong>Follow the dot with your finger.</strong> As it moves to the right, breathe in. As it returns, breathe out. Don't force the breath.</p>
+ </div>
+ <div class="card">
+  <div style="position:relative;height:190px;border-radius:18px;background:linear-gradient(180deg,#edf7f4,#f8fbfa);border:1px solid var(--line);overflow:hidden">
+   <div style="position:absolute;left:9%;right:9%;top:50%;height:3px;background:#b8cbc5"></div>
+   <div id="mindDot" style="position:absolute;top:50%;left:9%;width:36px;height:36px;border-radius:50%;background:var(--green);border:5px solid var(--yellow);transform:translate(-50%,-50%);box-shadow:0 3px 9px #0002"></div>
+   <strong style="position:absolute;left:9%;top:calc(50% + 35px);font-size:13px">BREATHE IN</strong>
+   <strong style="position:absolute;right:9%;top:calc(50% + 35px);font-size:13px">BREATHE OUT</strong>
   </div>
-</section>
-
-<section class="screen">
-  <h2>Take a moment</h2>
-  <p>You have just completed a patient encounter.</p>
-  <p>If you feel the job has affected you, take 1–2 minutes before moving on.</p>
-  <div class="qr">
-    <p><strong>Scan to access the wellbeing resource</strong></p>
-    <img id="qr" alt="Prototype QR code">
-    <p class="small">For demonstration only. A real deployment would use an approved Trust-hosted link.</p>
+  <div style="text-align:center;margin-top:14px">
+   <div id="mindStatus" style="font-size:19px;font-weight:800;color:var(--dark)">Ready when you are</div>
+   <div id="mindCount" class="small">0 cycles</div>
   </div>
-  <button class="primary" onclick="next()">Start wellbeing check-in</button>
-</section>
-
-<section class="screen">
-  <span class="badge">1 • CHECK IN</span>
-  <h2>How are you feeling?</h2>
-  <p><strong>Choose the option that feels closest right now.</strong></p>
-  <button class="choice" onclick="choose(this)">I'm okay and ready to continue</button>
-  <button class="choice" onclick="choose(this)">A little unsettled</button>
-  <button class="choice" onclick="choose(this)">Quite affected by the job</button>
-  <button class="choice" onclick="choose(this)">Very distressed</button>
-  <h3>What are you noticing?</h3>
-  <div class="checks">
-    <label><input type="checkbox">Anxiety</label>
-    <label><input type="checkbox">Feeling upset or sad</label>
-    <label><input type="checkbox">Frustration or anger</label>
-    <label><input type="checkbox">Feeling physically tense</label>
-    <label><input type="checkbox">Still feeling “switched on”</label>
-    <label><input type="checkbox">Thinking repeatedly about the patient/job</label>
-    <label><input type="checkbox">Something else</label>
+  <div style="display:flex;gap:9px;margin-top:10px">
+   <button id="mindStart" class="primary" style="margin:0">Start practice</button>
+   <button id="mindStop" style="margin:0">Stop</button>
   </div>
-  <p class="small">Nothing here needs to be recorded or transmitted. It is simply a moment to notice how you are feeling.</p>
+ </div>
+ <div class="note"><strong>Learning point:</strong> the aim isn't to empty your mind or make difficult feelings disappear. It is to practise noticing where your attention is and gently bringing it back to the present.</div>
+ <button onclick="next()">Continue to reset →</button>
 </section>
 
 <section class="screen">
-  <span class="badge">2 • RESET</span>
-  <h2>Take 60–90 seconds</h2>
-  <p><strong>Give yourself a short reset before moving on.</strong></p>
-  <div class="card"><h3>STOP</h3><p>Give yourself a moment. You have finished the call.</p></div>
-  <div class="card"><h3>TAKE A BREATH</h3><p>Take three slow breaths. Allow your shoulders to relax.</p></div>
-  <div class="card"><h3>OBSERVE</h3><p>What am I feeling? Where am I holding tension?</p></div>
-  <div class="card"><h3>PREPARE</h3><p>Ground yourself. Unclench your jaw. Relax your hands. Take a drink if appropriate.</p></div>
-  <div class="note"><strong>One patient's story has finished.</strong><br>The next patient deserves your attention too.</div>
-</section>
-
-<section class="screen">
-  <span class="badge">3 • REFLECT</span>
-  <h2>A quick reflection</h2>
-  <p><strong>You don't need to write an essay.</strong></p>
-  <div class="card"><h3>What went well?</h3><textarea placeholder="Optional private note…"></textarea></div>
-  <div class="card"><h3>What did I find difficult?</h3><textarea placeholder="Optional private note…"></textarea></div>
-  <div class="card"><h3>Is there anything I would do differently?</h3><textarea placeholder="Optional private note…"></textarea></div>
-  <div class="card"><h3>Is there anything I need to discuss?</h3><textarea placeholder="Optional private note…"></textarea></div>
-  <div class="card"><h3>What do I need to take forward — and what can I leave with this job?</h3><textarea placeholder="Optional private note…"></textarea></div>
-  <p class="small">Prototype: entries are not saved or transmitted anywhere.</p>
-</section>
-
-<section class="screen">
-  <span class="badge">4 • PREPARE</span>
-  <h2>What do I need before the next patient?</h2>
-  <div class="checks">
-    <label><input type="checkbox">A drink of water</label>
-    <label><input type="checkbox">A toilet break</label>
-    <label><input type="checkbox">A minute of quiet</label>
-    <label><input type="checkbox">To talk to my crewmate</label>
-    <label><input type="checkbox">To talk to a colleague/team leader</label>
-    <label><input type="checkbox">To discuss the clinical aspects of the job</label>
-    <label><input type="checkbox">To access further support</label>
-    <label><input type="checkbox">Nothing — I'm ready to continue</label>
+ <span class="badge">LEARN 3 • RESET</span>
+ <h2>Try the 60-second reset</h2>
+ <p>This is a simple grounding sequence you can practise after a difficult job.</p>
+ <div class="learn">
+  <div class="steps">
+   <div class="step"><div class="num">S</div><div><strong>STOP</strong><br><span class="small">Pause for a moment. The call is over.</span></div></div>
+   <div class="step"><div class="num">B</div><div><strong>BREATHE</strong><br><span class="small">Take three slow breaths. Let your shoulders drop.</span></div></div>
+   <div class="step"><div class="num">N</div><div><strong>NOTICE</strong><br><span class="small">Notice what you are feeling physically and emotionally, without judging it.</span></div></div>
+   <div class="step"><div class="num">R</div><div><strong>RESET</strong><br><span class="small">Take a drink, loosen your hands, look around, and bring your attention back to the present.</span></div></div>
   </div>
-  <div class="note">There is no “wrong” answer. Recognising that you need something is part of looking after yourself.</div>
+ </div>
+ <button class="primary" onclick="showAnswer('breath')">I've practised the reset</button>
+ <div id="breath" class="answer"><strong>Nice work.</strong><br>The purpose is not to make difficult feelings disappear. It is to create a small pause so you can notice what you need.</div>
+ <button onclick="next()">Move to reflection →</button>
 </section>
 
 <section class="screen">
-  <span class="badge">5 • READINESS CHECK</span>
-  <h2>Am I ready for the next patient?</h2>
-  <p>The aim is awareness, not a pass/fail test.</p>
-
-  <div class="traffic-grid">
-    <div class="traffic green-card">
-      <div class="lamp">GREEN</div>
-      <h3>Ready</h3>
-      <p>I feel ready to continue.</p>
-    </div>
-    <div class="traffic amber-card">
-      <div class="lamp">AMBER</div>
-      <h3>Monitor</h3>
-      <p>I can continue, but I'll monitor how I feel.</p>
-    </div>
-    <div class="traffic red-card">
-      <div class="lamp">RED</div>
-      <h3>Support</h3>
-      <p>I need to speak to someone before continuing.</p>
-    </div>
-  </div>
-
-  <button class="green" onclick="result('green')">GREEN — I'm ready to continue</button>
-  <button class="amber" onclick="result('amber')">AMBER — I'll monitor how I'm feeling</button>
-  <button class="red" onclick="result('red')">RED — I need to speak to someone</button>
-  <div id="resultBox" class="card result" style="display:none"></div>
+ <span class="badge">LEARN 3 • REFLECT</span>
+ <h2>Reflection: four useful questions</h2>
+ <p>This section introduces a practical way of structuring reflection following a patient encounter, drawing on reflective practice and Neighbour's consultation model.</p>
+ <div class="steps">
+  <div class="step"><div class="num">1</div><div><strong>What happened?</strong><br><span class="small">Briefly describe the encounter and what stands out.</span></div></div>
+  <div class="step"><div class="num">2</div><div><strong>How did I feel?</strong><br><span class="small">Notice your emotional and physical response.</span></div></div>
+  <div class="step"><div class="num">3</div><div><strong>What can I learn?</strong><br><span class="small">Consider what went well, what was difficult, and what you might take forward.</span></div></div>
+  <div class="step"><div class="num">4</div><div><strong>What do I need now?</strong><br><span class="small">Identify any practical reset, conversation or support that would help.</span></div></div>
+ </div>
+ <div class="card">
+  <h3>Try one question</h3>
+  <p><strong>What do I need now, before the next patient?</strong></p>
+  <textarea placeholder="Optional private reflection…"></textarea>
+  <p class="small">Prototype only: this text is not saved or transmitted.</p>
+ </div>
+ <button onclick="next()">Test your learning →</button>
 </section>
 
 <section class="screen">
-  <span class="badge">SUPPORT</span>
-  <h2>If you need support</h2>
-  <div class="card">
-    <h3>Your crewmate</h3>
-    <p>Sometimes simply talking through what happened can help.</p>
-    <h3>Your colleagues / team leader</h3>
-    <p>Speak to someone you trust or use the appropriate operational or clinical support pathway.</p>
-    <h3>Your Trust's wellbeing services</h3>
-    <p>Access the relevant wellbeing, occupational health or employee support service.</p>
-    <h3>Further professional support</h3>
-    <p>Use the appropriate service available within your organisation.</p>
-  </div>
-  <div class="note"><strong>If you don't feel able to continue safely: tell someone.</strong><br><br>This resource is not a substitute for clinical, occupational or psychological support.</div>
-  <p class="small">Before real-world use, replace this with approved local Trust support pathways and governance wording.</p>
+ <span class="badge">LEARN 4 • APPLY</span>
+ <h2>What would you do?</h2>
+ <div class="scenario">
+  <p><strong>Scenario</strong></p>
+  <p>You've just attended a particularly difficult call. You notice your shoulders are tense and you keep thinking about what happened. You have another patient waiting.</p>
+  <p><strong>Which response best demonstrates self-awareness?</strong></p>
+  <button onclick="quiz(this,false)">Carry on immediately and ignore how I feel.</button>
+  <button onclick="quiz(this,true)">Pause briefly, notice my response, use a reset technique and decide what support I need.</button>
+  <button onclick="quiz(this,false)">Assume that feeling affected means I am not coping professionally.</button>
+  <div id="quizFeedback" class="feedback"></div>
+ </div>
+ <button id="quizNext" style="display:none" onclick="next()">Continue to readiness →</button>
 </section>
 
 <section class="screen">
-  <span class="badge">COMPLETE</span>
-  <h2>Well done — you've taken a moment.</h2>
-  <p>You have checked in, reflected and considered what you need before your next patient.</p>
-  <div class="card soft">
-    <h3>Remember</h3>
-    <p>Looking after yourself does not mean you are not resilient. Recognising when a job has affected you is part of professional self-awareness.</p>
-  </div>
-  <button class="primary" onclick="go(0)">Return to start</button>
-  <div class="footer-stripe"><strong>WELL PEOPLE • STRONG TEAMS • BETTER CARE</strong></div>
+ <span class="badge">APPLY • YOUR STATE</span>
+ <h2>Where are you now?</h2>
+ <p>Use the traffic-light system as a **self-awareness prompt**, not a pass/fail assessment.</p>
+ <div class="traffic-grid">
+  <div class="traffic gc"><div class="lamp">GREEN</div><h3>Ready</h3><p>I feel ready to continue.</p></div>
+  <div class="traffic ac"><div class="lamp">AMBER</div><h3>Monitor</h3><p>I can continue, but I should keep checking in.</p></div>
+  <div class="traffic rc"><div class="lamp">RED</div><h3>Support</h3><p>I need to speak to someone.</p></div>
+ </div>
+ <button onclick="state('green')">🟢 GREEN — I'm ready</button>
+ <button onclick="state('amber')">🟠 AMBER — I'll monitor myself</button>
+ <button onclick="state('red')">🔴 RED — I need support</button>
+ <div id="stateBox"></div>
+</section>
+
+<section class="screen">
+ <span class="badge">LEARN 7 • SUPPORT</span>
+ <h2>Knowing when to seek support</h2>
+ <p>Sometimes a brief reset is enough. Sometimes a conversation or further support is appropriate.</p>
+ <div class="card">
+  <h3>Consider speaking to someone if…</h3>
+  <ul>
+   <li>the feelings are intense or continue after the immediate situation has passed;</li>
+   <li>you are struggling to concentrate or move on from the encounter;</li>
+   <li>you feel you need help before continuing your duties; or</li>
+   <li>you simply feel that talking to someone would help.</li>
+  </ul>
+ </div>
+ <div class="note"><strong>Support is part of professional self-care.</strong><br>Use your organisation's approved clinical, operational, wellbeing or occupational-health pathways. In a real deployment, these links would be replaced with local Trust-approved routes.</div>
+ <button class="primary" onclick="next()">Finish the learning →</button>
+</section>
+
+<section class="screen">
+ <span class="badge">COMPLETE</span>
+ <h2>Learning complete</h2>
+ <div class="card soft">
+  <h3>You have practised four skills:</h3>
+  <ul><li>Recognising how a difficult call can affect you.</li><li>Using a brief reset technique.</li><li>Structuring reflection.</li><li>Identifying when you may need support.</li></ul>
+ </div>
+ <div class="card">
+  <h3>One-minute takeaway</h3>
+  <p><strong>STOP → BREATHE → NOTICE → REFLECT → RESET → DECIDE WHAT YOU NEED</strong></p>
+ </div>
+ <p>This prototype is designed as a learning and wellbeing intervention. It is not a clinical assessment, fitness-to-work test or replacement for local support procedures.</p>
+ <button class="primary" onclick="go(0)">Return to start</button>
+ <div class="footer"><strong>WELL PEOPLE • STRONG TEAMS • BETTER CARE</strong></div>
 </section>
 
 </main>
 
-<div class="nav">
-  <button class="back" onclick="prev()">Back</button>
-  <button class="next primary" id="next" onclick="next()">Continue</button>
-</div>
+<div class="nav"><button class="back" onclick="prev()">Back</button><button class="next primary" id="next" onclick="next()">Continue</button></div>
 
 <script>
-let i=0;
-const s=[...document.querySelectorAll('.screen')];
-
-function render(){
-  s.forEach((x,n)=>x.classList.toggle('active',n===i));
-  document.getElementById('bar').style.width=(i/(s.length-1)*100)+'%';
-  document.getElementById('next').textContent=i===s.length-1?'Done':'Continue';
-  document.querySelector('.back').disabled=i===0;
-  window.scrollTo(0,0);
-}
+let i=0;const s=[...document.querySelectorAll('.screen')];
+function render(){s.forEach((x,n)=>x.classList.toggle('active',n===i));document.getElementById('bar').style.width=(i/(s.length-1)*100)+'%';document.getElementById('next').textContent=i===s.length-1?'Done':'Continue';document.querySelector('.back').disabled=i===0;window.scrollTo(0,0)}
 function next(){if(i<s.length-1){i++;render()}}
 function prev(){if(i>0){i--;render()}}
 function go(n){i=n;render()}
-function choose(x){
-  x.parentNode.querySelectorAll('.choice').forEach(y=>y.classList.remove('selected'));
-  x.classList.add('selected');
+function showAnswer(id){document.getElementById(id).classList.add('show')}
+function quiz(btn,correct){
+ document.querySelectorAll('.scenario button').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');
+ const f=document.getElementById('quizFeedback');f.style.display='block';f.className='feedback '+(correct?'correct':'consider');
+ f.innerHTML=correct?'<strong>Good choice.</strong><br>Self-awareness means noticing your response, using a practical reset and considering what you need.':'<strong>Think again.</strong><br>The learning point is to notice your response rather than ignore it or judge yourself for having it.';
+ document.getElementById('quizNext').style.display=correct?'block':'none';
 }
-function result(t){
-  const b=document.getElementById('resultBox');
-  b.style.display='block';
-  b.className='card result';
-  if(t==='green'){
-    b.innerHTML='<strong>GREEN — You feel ready to continue.</strong><p>Take a breath, reset your attention and move on when you are ready.</p>';
-  }else if(t==='amber'){
-    b.innerHTML='<strong>AMBER — You can continue, but keep an eye on how you are feeling.</strong><p>Consider speaking to your crewmate or accessing support later if the feelings persist or increase.</p>';
-  }else{
-    b.innerHTML='<strong>RED — You have identified that you need support before continuing.</strong><p>Speak to your crewmate, team leader or the appropriate local clinical/operational support route.</p><button onclick="go(8)">View support options</button>';
-  }
+function state(t){
+ const b=document.getElementById('stateBox');
+ if(t==='green'){b.innerHTML='<div class="result green"><strong>🟢 GREEN — Ready</strong><p>You feel able to continue. Take a breath, reset your attention and move on when ready.</p></div>'}
+ if(t==='amber'){b.innerHTML='<div class="result amber"><strong>🟠 AMBER — Monitor</strong><p>You have noticed an impact. Consider a brief reset and speaking with your crewmate or colleague if you need to.</p></div>'}
+ if(t==='red'){b.innerHTML='<div class="result red"><strong>🔴 RED — Support</strong><p>You have identified that you need support. Use the appropriate local route and tell someone you trust.</p></div>'}
 }
-document.getElementById('qr').src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&data='+encodeURIComponent(location.href);
+let mindRaf=null,mindRunning=false,mindStartTime=0,mindCycles=0;
+const mindDot=document.getElementById('mindDot'),mindStatus=document.getElementById('mindStatus'),mindCount=document.getElementById('mindCount');
+function mindFrame(t){
+ if(!mindRunning)return;
+ if(!mindStartTime)mindStartTime=t;
+ const duration=5000,elapsed=t-mindStartTime,phase=(elapsed%duration)/duration;
+ const forward=phase<0.5,local=forward?phase*2:(phase-0.5)*2;
+ const x=forward?9+82*local:91-82*local;
+ mindDot.style.left=x+'%';
+ mindStatus.textContent=forward?'Breathe in':'Breathe out';
+ if(!forward && local<0.02) mindCycles++;
+ mindCount.textContent=mindCycles+' cycle'+(mindCycles===1?'':'s');
+ mindRaf=requestAnimationFrame(mindFrame);
+}
+document.getElementById('mindStart').addEventListener('click',()=>{
+ if(mindRunning)return;
+ mindRunning=true;mindStartTime=0;mindStatus.textContent='Breathe in';
+ mindRaf=requestAnimationFrame(mindFrame);
+});
+document.getElementById('mindStop').addEventListener('click',()=>{
+ mindRunning=false;
+ if(mindRaf)cancelAnimationFrame(mindRaf);
+ mindRaf=null;mindStatus.textContent='Practice paused';
+});
 render();
 </script>
 </body>
