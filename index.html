@@ -95,7 +95,7 @@ textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;
  <p>This short exercise uses your breathing and attention to create a transition between patient encounters.</p>
  <div class="learn">
   <div class="learn-title">How it works</div>
-  <p><strong>Follow the dot with your finger.</strong> As it moves to the right, breathe in. As it returns, breathe out. Don't force the breath.</p>
+  <p><strong>Follow the dot with your finger.</strong> As it moves to the right, breathe in. As it returns, breathe out. Follow it at a comfortable pace — don't force or hold your breath. The dot is simply a guide to help you focus your attention.</p>
  </div>
  <div class="card">
   <div style="position:relative;height:190px;border-radius:18px;background:linear-gradient(180deg,#edf7f4,#f8fbfa);border:1px solid var(--line);overflow:hidden">
@@ -244,8 +244,8 @@ const mindDot=document.getElementById('mindDot'),mindStatus=document.getElementB
 function mindFrame(t){
  if(!mindRunning)return;
  if(!mindStartTime)mindStartTime=t;
- const duration=5000,elapsed=t-mindStartTime,phase=(elapsed%duration)/duration;
- const forward=phase<0.5,local=forward?phase*2:(phase-0.5)*2;
+ const duration=10000,elapsed=t-mindStartTime,phase=(elapsed%duration)/duration;
+ const forward=phase<0.45,local=forward?phase/0.45:(phase-0.45)/0.55;
  const x=forward?9+82*local:91-82*local;
  mindDot.style.left=x+'%';
  mindStatus.textContent=forward?'Breathe in':'Breathe out';
