@@ -244,8 +244,8 @@ const mindDot=document.getElementById('mindDot'),mindStatus=document.getElementB
 function mindFrame(t){
  if(!mindRunning)return;
  if(!mindStartTime)mindStartTime=t;
- const duration=10000,elapsed=t-mindStartTime,phase=(elapsed%duration)/duration;
- const forward=phase<0.45,local=forward?phase/0.45:(phase-0.45)/0.55;
+ const duration=8500,elapsed=t-mindStartTime,phase=(elapsed%duration)/duration;
+ const forward=phase<(4/8.5),local=forward?phase/(4/8.5):(phase-(4/8.5))/(4.5/8.5);
  const x=forward?9+82*local:91-82*local;
  mindDot.style.left=x+'%';
  mindStatus.textContent=forward?'Breathe in':'Breathe out';
