@@ -43,7 +43,13 @@ button.primary{background:var(--green);color:#fff}button.primary:hover{backgroun
 textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;padding:11px;font-size:16px;font-family:inherit}
 .checks label{display:block;background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px;margin:8px 0;font-size:16px}.checks input{accent-color:var(--green);margin-right:9px}
 .scenario{background:#f7faf9;border:2px solid var(--green);border-radius:16px;padding:18px}.feedback{display:none;margin-top:12px;padding:13px;border-radius:11px}.correct{background:var(--gl);border-left:4px solid var(--g)}.consider{background:var(--al);border-left:4px solid var(--a)}
-.result{padding:18px;border-radius:15px;margin-top:14px}.result.green{background:var(--gl);border:2px solid var(--g)}.result.amber{background:var(--al);border:2px solid var(--a)}.result.red{background:var(--rl);border:2px solid var(--r)}
+.result{padding:18px;border-radius:15px;margin-top:14px}
+.support-card{padding:18px;border-radius:15px;margin-top:14px;border:2px solid var(--line);background:#fff}
+.support-card h3{margin-top:0}
+.support-card .support-link{display:block;text-decoration:none;text-align:center;width:100%;box-sizing:border-box;min-height:52px;padding:14px 16px;border:2px solid var(--green);border-radius:12px;background:#fff;color:var(--dark);font-size:16px;font-weight:800;margin:9px 0}
+.support-card .support-link.primary-link{background:var(--green);color:#fff}
+.support-note{font-size:13px;color:var(--muted)}
+.result.green{background:var(--gl);border:2px solid var(--g)}.result.amber{background:var(--al);border:2px solid var(--a)}.result.red{background:var(--rl);border:2px solid var(--r)}
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);display:flex;gap:9px;padding:10px 16px;background:#fffffff7;border-top:1px solid var(--line);box-shadow:0 -5px 20px #0001;z-index:30}.nav button{margin:0}.back{width:30%}.next{width:70%}
 .footer{margin:25px -18px -8px;padding:22px 18px;background:var(--green);color:#fff;text-align:center;border-top:5px solid var(--yellow)}.footer strong{color:var(--yellow);letter-spacing:1px}
 @media(max-width:520px){main{padding-left:14px;padding-right:14px}.hero{margin-left:-14px;margin-right:-14px;padding-left:17px;padding-right:17px}h1{font-size:31px}.traffic-grid{gap:6px}.traffic{padding:10px 5px;min-height:160px}.lamp{width:54px;height:54px}.traffic p{font-size:12px}.footer{margin-left:-14px;margin-right:-14px}}
@@ -173,31 +179,38 @@ textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;
  <h2>Where are you now?</h2>
  <p>Use the traffic-light system as a **self-awareness prompt**, not a pass/fail assessment.</p>
  <div class="traffic-grid">
-  <div class="traffic gc"><div class="lamp">GREEN</div><h3>Ready</h3><p>I feel ready to continue.</p></div>
-  <div class="traffic ac"><div class="lamp">AMBER</div><h3>Monitor</h3><p>I can continue, but I should keep checking in.</p></div>
-  <div class="traffic rc"><div class="lamp">RED</div><h3>Support</h3><p>I need to speak to someone.</p></div>
+  <div class="traffic gc"><div class="lamp">GREEN</div><h3>Ready</h3><p>I'm okay to continue.</p></div>
+  <div class="traffic ac"><div class="lamp">AMBER</div><h3>Pause / support</h3><p>I could benefit from some time or support.</p></div>
+  <div class="traffic rc"><div class="lamp">RED</div><h3>Support</h3><p>I need some support before moving on.</p></div>
  </div>
- <button onclick="state('green')">🟢 GREEN — I'm ready</button>
- <button onclick="state('amber')">🟠 AMBER — I'll monitor myself</button>
- <button onclick="state('red')">🔴 RED — I need support</button>
+ <button onclick="state('green')">🟢 GREEN — I'm okay to continue</button>
+ <button onclick="state('amber')">🟠 AMBER — I could benefit from some time or support</button>
+ <button onclick="state('red')">🔴 RED — I need some support</button>
  <div id="stateBox"></div>
 </section>
 
-<section class="screen">
- <span class="badge">LEARN 7 • SUPPORT</span>
- <h2>Knowing when to seek support</h2>
- <p>Sometimes a brief reset is enough. Sometimes a conversation or further support is appropriate.</p>
- <div class="card">
-  <h3>Consider speaking to someone if…</h3>
-  <ul>
-   <li>the feelings are intense or continue after the immediate situation has passed;</li>
-   <li>you are struggling to concentrate or move on from the encounter;</li>
-   <li>you feel you need help before continuing your duties; or</li>
-   <li>you simply feel that talking to someone would help.</li>
-  </ul>
+<section class="screen" id="support">
+ <span class="badge">FINISH • SUPPORT</span>
+ <h2>💚 A final note about support</h2>
+ <p><strong>Pause Before the Next Patient is designed for the here and now.</strong></p>
+ <p>It works alongside the wellbeing and support already available through YAS. It does not replace YAS wellbeing services, Post Incident Care, or existing clinical and managerial support pathways.</p>
+
+ <div class="support-card">
+  <h3>📞 If you need urgent mental-health support</h3>
+  <p>If you're experiencing suicidal thoughts or a mental health crisis, the Ambulance Staff Crisis Phoneline is available to UK ambulance staff 24/7, 365 days a year.</p>
+  <a class="support-link primary-link" href="tel:03003730898">Call 0300 373 0898</a>
+  <p class="support-note">Independent and confidential support for UK ambulance staff.</p>
+  <a class="support-link" href="https://www.theasc.org.uk/crisis/" target="_blank" rel="noopener">More information about the crisis phoneline →</a>
  </div>
- <div class="note"><strong>Support is part of professional self-care.</strong><br>Use your organisation's approved clinical, operational, wellbeing or occupational-health pathways. In a real deployment, these links would be replaced with local Trust-approved routes.</div>
- <button class="primary" onclick="next()">Finish the learning →</button>
+
+ <div class="support-card">
+  <h3>🌱 Want to explore more?</h3>
+  <p>Full YAS wellbeing support can be found on <strong>Pulse under YAS Wellbeing</strong>.</p>
+  <p class="support-note">Use the current YAS information there for the full range of support and access arrangements.</p>
+ </div>
+
+ <p class="support-note">This resource is a brief point-of-need intervention. It is not a wellbeing assessment or a replacement for existing YAS support.</p>
+ <button class="primary" onclick="next()">Complete →</button>
 </section>
 
 <section class="screen">
@@ -235,9 +248,15 @@ function quiz(btn,correct){
 }
 function state(t){
  const b=document.getElementById('stateBox');
- if(t==='green'){b.innerHTML='<div class="result green"><strong>🟢 GREEN — Ready</strong><p>You feel able to continue. Take a breath, reset your attention and move on when ready.</p></div>'}
- if(t==='amber'){b.innerHTML='<div class="result amber"><strong>🟠 AMBER — Monitor</strong><p>You have noticed an impact. Consider a brief reset and speaking with your crewmate or colleague if you need to.</p></div>'}
- if(t==='red'){b.innerHTML='<div class="result red"><strong>🔴 RED — Support</strong><p>You have identified that you need support. Use the appropriate local route and tell someone you trust.</p></div>'}
+ if(t==='green'){
+  b.innerHTML='<div class="result green"><strong>🟢 GREEN — I’m okay to continue</strong><p>You feel ready to move on. Take a breath, reset your attention and continue when ready.</p></div>'
+ }
+ if(t==='amber'){
+  b.innerHTML='<div class="result amber"><strong>🟠 AMBER — I could benefit from some time or support</strong><p>Consider taking a brief moment, talking to a crewmate or colleague, or accessing the support available to you.</p></div>'
+ }
+ if(t==='red'){
+  b.innerHTML='<div class="result red"><strong>🔴 RED — I need some support before moving on</strong><p>You’ve identified that you need support. Consider speaking with a colleague or manager, or accessing appropriate support.</p><p><a href="#support" onclick="go(7);return false;">See simplified YAS wellbeing support →</a></p></div>'
+ }
 }
 let mindRaf=null,mindRunning=false,mindStartTime=0,mindCycles=0;
 const mindDot=document.getElementById('mindDot'),mindStatus=document.getElementById('mindStatus'),mindCount=document.getElementById('mindCount');
