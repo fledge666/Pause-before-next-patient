@@ -18,7 +18,7 @@ header{position:sticky;top:0;z-index:20;background:var(--green);color:#fff;borde
 .brand{display:flex;gap:11px;align-items:center}.mark{width:43px;height:43px;border:2px solid var(--yellow);border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:900;text-align:center;color:var(--yellow)}
 .bt{font-size:17px;font-weight:800}.bs{font-size:10px;letter-spacing:2px;margin-top:3px}.progress{height:5px;background:#ffffff40;border-radius:5px;margin-top:10px;overflow:hidden}.bar{height:100%;width:0;background:var(--yellow);transition:.25s}
 main{padding:0 18px 105px}.screen{display:none;padding:24px 0}.screen.active{display:block}
-.hero{margin:0 -18px;padding:30px 22px 26px;background:linear-gradient(135deg,var(--green),var(--dark));color:#fff;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-45px;top:-10px;width:160px;height:18px;background:var(--yellow);transform:rotate(-55deg);box-shadow:0 30px 0 var(--yellow)}
+.hero{margin:0 -18px;padding:30px 22px 26px;background:linear-gradient(135deg,var(--green),var(--dark));color:#fff;position:relative;overflow:hidden}.hero:after{content:none}
 h1{font-size:39px;line-height:1.02;margin:0 0 13px;letter-spacing:-1px}h1 span{display:block;color:var(--yellow)}
 h2{font-size:28px;line-height:1.12;color:var(--dark);margin:0 0 13px}h3{color:var(--dark);margin:18px 0 7px}p,li{font-size:17px;line-height:1.5}.lead{font-size:19px}.small{font-size:13px;color:var(--muted);line-height:1.45}
 .badge{display:inline-block;background:var(--yellow);color:var(--dark);font-size:12px;font-weight:900;letter-spacing:.8px;border-radius:999px;padding:6px 10px;margin-bottom:12px}
@@ -66,7 +66,6 @@ textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;
 
 <section class="screen active">
  <div class="hero">
-  <div class="badge">MICRO-LEARNING • WELLBEING • REFLECTION</div>
   <h1>PAUSE BEFORE<span>THE NEXT PATIENT</span></h1>
   <p class="lead">A brief learning and reflection tool for ambulance clinicians after a challenging patient encounter.</p>
   <p>Learn one simple reset skill, practise reflective thinking, and decide what you need before moving on.</p>
@@ -209,6 +208,11 @@ textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;
   <p class="support-note">Use the current YAS information there for the full range of support and access arrangements.</p>
  </div>
 
+ <div class="card soft">
+  <p style="margin-top:0"><strong>Further reading: AACE Mental Health Continuum (October 2023).</strong></p>
+  <p class="support-note" style="margin-bottom:0">The green, amber and red readiness check in this resource is a brief personal reflection, not a mental health assessment. The AACE Mental Health Continuum offers a broader framework for understanding mental health and wellbeing.</p>
+ </div>
+
  <p class="support-note">This resource is a brief point-of-need intervention. It is not a wellbeing assessment or a replacement for existing YAS support.</p>
  <button class="primary" onclick="next()">Complete →</button>
 </section>
@@ -235,8 +239,8 @@ textarea{width:100%;min-height:85px;border:1px solid #aebfba;border-radius:10px;
 
 <script>
 let i=0;const s=[...document.querySelectorAll('.screen')];
-function render(){s.forEach((x,n)=>x.classList.toggle('active',n===i));document.getElementById('bar').style.width=(i/(s.length-1)*100)+'%';document.getElementById('next').textContent=i===s.length-1?'Done':'Continue';document.querySelector('.back').disabled=i===0;window.scrollTo(0,0)}
-function next(){if(i<s.length-1){i++;render()}}
+function render(){s.forEach((x,n)=>x.classList.toggle('active',n===i));document.getElementById('bar').style.width=(i/(s.length-1)*100)+'%';document.getElementById('next').textContent=i===s.length-1?'Restart':'Continue';document.querySelector('.back').disabled=i===0;window.scrollTo(0,0)}
+function next(){if(i<s.length-1){i++;render()}else{go(0)}}
 function prev(){if(i>0){i--;render()}}
 function go(n){i=n;render()}
 function showAnswer(id){document.getElementById(id).classList.add('show')}
